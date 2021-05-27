@@ -4,8 +4,8 @@ from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from Zadanie_app.models import File
 from django.urls import reverse_lazy
-from Zadanie_app.Read_csv import DataAnalizing
 from django.urls import reverse
+from Zadanie_app.data_analizing import DataAnalizing
 
 
 class FileListView(LoginRequiredMixin, ListView):
@@ -21,6 +21,12 @@ class FileDetailView(LoginRequiredMixin, DetailView):
     model = File
     template_name = 'file_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(FileDetailView, self).get_context_data(**kwargs)
+        context = context | DataAnalizing(self.object).get_data()
+
+        return context
+
 
 class FileCreateView(LoginRequiredMixin, CreateView):
     model = File
@@ -29,19 +35,17 @@ class FileCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
 
-        file_name = f"user_{self.request.user.id}/{form.cleaned_data['file']}"
-
-        if File.objects.filter(file=file_name).exists():
-            form.add_error('file', 'Posiadasz już plik o takiej nazwie')
-            return self.form_invalid(form)
-
         if form.is_valid():
+
+            file_path = f"user_{self.request.user.id}/{form.cleaned_data['file']}/{form.cleaned_data['file']}"
+
+            if File.objects.filter(file=file_path).exists():
+                form.add_error('file', 'Posiadasz już plik o takiej nazwie')
+                return self.form_invalid(form)
+
             file = form.save(commit=False)
             file.user = self.request.user
             file.save()
-
-            f = DataAnalizing(file, self.request.user)
-            f.save()
 
             return redirect(reverse('files_list'))
         return HttpResponse(status=404)

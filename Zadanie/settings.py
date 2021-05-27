@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Zadanie_app.apps.ZadanieAppConfig',
+    'Zadanie_app',
 ]
 
 MIDDLEWARE = [
@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'Zadanie.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '1',
-        'USER': '2',
-        'PASSWORD': '3',
-        'HOST': '127.0.4.1',
+        'NAME': 'zadanie_db',
+        'USER': ':)',
+        'PASSWORD': ':)',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }

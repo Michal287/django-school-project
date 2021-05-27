@@ -1,9 +1,12 @@
+import shutil
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.template.defaultfilters import slugify
 import pandas as pd
+import os
 
 
 def file_directory_path(instance, filename):
@@ -22,8 +25,16 @@ class File(models.Model):
     def get_absolute_url(self):
         return reverse('file_detail', args=[self.id, self.slug])
 
-    def get_name(self):
-        return self.file.name.split('/', 1)[1]
+    def dir_path(self):
+        return "/".join(str(self.file).split("/")[:-1])
+
+    def delete(self):
+        path = settings.MEDIA_ROOT + self.dir_path()
+
+        if os.path.exists(path):
+            shutil.rmtree(path)
+
+        return super(File, self).delete()
 
     def clean(self):
         if not self.file.name.endswith('.csv'):

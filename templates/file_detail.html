@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block head %}
 
@@ -8,18 +9,101 @@
 
 {% block body %}
 
-    <table>
 
-        <thead>
-            <tr>
-                <th>Szczgóły pliku: {{ file.get_name }}</th>
-            </tr>
-        </thead>
 
         <tbody>
 
-        </tbody>
+        <table>
 
-    </table>
+        {% if numerics %}
+
+            <tr>
+                <th>Wartość minimalna</th>
+                <th>Wartość maksymalna</th>
+                <th>Średnia</th>
+                <th>Mediana</th>
+                <th>Wartość standaryzowana</th>
+            </tr>
+
+                {% for row in numerics %}
+
+                <tr>
+                    <td>{{ row.min_value }}</td>
+                    <td>{{ row.max_value }}</td>
+                    <td>{{ row.mean }}</td>
+                    <td>{{ row.median }}</td>
+                    <td>{{ row.std }}</td>
+                <tr>
+
+                {% endfor %}
+
+        {% endif %}
+
+        </table>
+
+        <table>
+
+        {% if objects %}
+
+            <tr>
+                <th>Ilość wartości unikalnych</th>
+                <th>Ilość wartości pustych</th>
+                <th>Ilość wartości NaN</th>
+            </tr>
+
+                {% for row in objects %}
+
+                <tr>
+                    <td>{{ row.unique_values }}</td>
+                    <td>{{ row.empty_values }}</td>
+                    <td>{{ row.nan_values }}</td>
+                <tr>
+
+                {% endfor %}
+
+        {% endif %}
+
+        </table>
+
+        <table>
+
+        {% if datetime %}
+
+            <tr>
+                <th>Pierwsza data</th>
+                <th>Ostatnia data</th>
+            </tr>
+
+                {% for row in datetime %}
+
+                <tr>
+                    <td>{{ row.first_date }}</td>
+                    <td>{{ row.last_date }}</td>
+                <tr>
+
+                {% endfor %}
+
+        {% endif %}
+
+        </table>
+
+        <table>
+
+        {% if historams %}
+
+                {% for row in historams %}
+
+                <tr>
+                    <td><img src="{% static '/media/' %}{{ row.image }}"></td>
+                <tr>
+
+                {% endfor %}
+
+        {% endif %}
+
+        </table>
+
+
+        </tbody>
 
 {% endblock %}
