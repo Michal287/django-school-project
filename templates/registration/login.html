@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+    <title>Logowanie</title>
+
+{% endblock head %}
+
+{% block body %}
+
+LOGOWANIE
+
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+    <input type="submit" value="Zaloguj się">
+    </form>
+
+{#    <a href="{% url 'password_reset_view' %}">Zapomniałeś hasła?</a>#}
+
+{% endblock %}

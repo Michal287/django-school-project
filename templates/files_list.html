@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+    <title>Lista plików</title>
+
+{% endblock head %}
+
+{% block body %}
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Lista wczytanych plików</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <h4><a href="{% url 'file_create' %}">Dodaj nowy plik</a></h4>
+
+            {% for file in object_list %}
+
+                <tr>
+                    <td>
+                        <h5>{{ file.id }}</h5>
+                    <td>
+                        <h5><a href="{{ file.get_absolute_url }}">{{ file.get_name }}</a></h5>
+                    </td>
+                    <td>
+                        <h5>{{ file.file.size }}</h5>
+                    </td>
+                    <td>
+                        <h5>
+                            <form method="post" action="{% url 'file_delete' file.pk %}">
+                                {% csrf_token %}
+                                <input type="submit" value="usuń plik">
+                            </form>
+                        </h5>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% endblock %}
