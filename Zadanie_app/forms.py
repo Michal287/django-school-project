@@ -1,19 +1,9 @@
-from django.forms import ModelForm
-from django.core.exceptions import ValidationError
-from Zadanie_app.models import File
+from Zadanie_app.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 
-class FileCreateForm(ModelForm):
+class RegisterForm(UserCreationForm):
     class Meta:
-        model = File
-        fields = ['file']
+        model = User
+        fields = ['username', 'password1', 'password2']
 
-    def clean(self):
-        cleaned_data = super(FileCreateForm, self).clean()
-
-        file = cleaned_data.get('file')
-
-        if File.objects.get(file=file, user=self.request.user) is not None:
-            raise ValidationError(("Posiadasz już plik o takiej nazwie"))
-
-        return cleaned_data

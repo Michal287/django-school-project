@@ -13,21 +13,26 @@
 
         <tbody>
 
-        <table>
+        <a href="{% url 'files_list' %}">Powrót do listy</a>
+
+        <table class="table">
 
         {% if numerics %}
-
+          <thead class="thead-dark">
             <tr>
+                <th>Kolumna</th>
                 <th>Wartość minimalna</th>
                 <th>Wartość maksymalna</th>
                 <th>Średnia</th>
                 <th>Mediana</th>
                 <th>Wartość standaryzowana</th>
             </tr>
+          </thead>
 
                 {% for row in numerics %}
 
                 <tr>
+                    <th>{{ row.column }}</th>
                     <td>{{ row.min_value }}</td>
                     <td>{{ row.max_value }}</td>
                     <td>{{ row.mean }}</td>
@@ -41,19 +46,22 @@
 
         </table>
 
-        <table>
+        <table class="table">
 
         {% if objects %}
-
+          <thead class="thead-dark">
             <tr>
+                <th>Kolumna</th>
                 <th>Ilość wartości unikalnych</th>
                 <th>Ilość wartości pustych</th>
                 <th>Ilość wartości NaN</th>
             </tr>
+          </thead>
 
                 {% for row in objects %}
 
                 <tr>
+                    <th>{{ row.column }}</th>
                     <td>{{ row.unique_values }}</td>
                     <td>{{ row.empty_values }}</td>
                     <td>{{ row.nan_values }}</td>
@@ -65,18 +73,23 @@
 
         </table>
 
-        <table>
+        <table class="table">
 
         {% if datetime %}
+          <thead class="thead-dark">
 
             <tr>
+                <th>Kolumna</th>
                 <th>Pierwsza data</th>
                 <th>Ostatnia data</th>
             </tr>
 
+          </thead>
+
                 {% for row in datetime %}
 
                 <tr>
+                    <th>{{ row.column }}</th>
                     <td>{{ row.first_date }}</td>
                     <td>{{ row.last_date }}</td>
                 <tr>
@@ -91,13 +104,18 @@
 
         {% if historams %}
 
-                {% for row in historams %}
 
-                <tr>
-                    <td><img src="{% static '/media/' %}{{ row.image }}"></td>
-                <tr>
+            {% for row in historams %}
+                <div class="card" style="float:left; width: 38.5rem;">
+                  <img class="card-img-top" src="{% static '/media/' %}{{ row.image }}" alt="Card image cap">
+                  <div class="card-body">
+                    <p class="card-text">{{ row.column }}</p>
+                  </div>
+                </div>
+            {% endfor %}
 
-                {% endfor %}
+
+
 
         {% endif %}
 

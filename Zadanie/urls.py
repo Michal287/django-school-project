@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from Zadanie_app.views import FileListView, FileDetailView, FileCreateView, FileDeleteView
+from Zadanie_app.views import FileListView, FileDetailView, FileCreateView, FileDeleteView, RegisterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('files/', FileListView.as_view(), name='files_list'),
     path('<int:pk>/file/update/<slug>/', FileDetailView.as_view(), name='file_detail'),

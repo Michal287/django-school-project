@@ -18,6 +18,17 @@ class File(models.Model):
     file = models.FileField(upload_to=file_directory_path, storage=False)
     slug = models.SlugField(max_length=200)
 
+    _metadata = {
+        'lines': 'get_df_lines',
+    }
+
+    def filename(self):
+        return (str(self.file.name).split("/"))[-1:][0]
+
+    def get_df_lines(self):
+        df = pd.read_csv(self.file, delimiter=';')
+        return len(df)
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.file.name)
         super(File, self).save(*args, **kwargs)
@@ -51,6 +62,8 @@ class File(models.Model):
 
 class FileNumerics(models.Model):
     file = models.ForeignKey(File, on_delete=models.CASCADE)
+    column = models.CharField(max_length=128)
+    col_type = models.CharField(max_length=32)
     min_value = models.FloatField()
     max_value = models.FloatField()
     mean = models.FloatField()
@@ -60,6 +73,8 @@ class FileNumerics(models.Model):
 
 class FileObjects(models.Model):
     file = models.ForeignKey(File, on_delete=models.CASCADE)
+    column = models.CharField(max_length=128)
+    col_type = models.CharField(max_length=32)
     unique_values = models.IntegerField()
     empty_values = models.IntegerField()
     nan_values = models.IntegerField()
@@ -67,10 +82,14 @@ class FileObjects(models.Model):
 
 class FileDateTime(models.Model):
     file = models.ForeignKey(File, on_delete=models.CASCADE)
+    column = models.CharField(max_length=128)
+    col_type = models.CharField(max_length=32)
     first_date = models.DateField()
     last_date = models.DateField()
 
 
 class FileHistogram(models.Model):
     file = models.ForeignKey(File, on_delete=models.CASCADE)
+    column = models.CharField(max_length=128)
+    col_type = models.CharField(max_length=32)
     image = models.ImageField(max_length=255, blank=True)

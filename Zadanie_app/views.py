@@ -6,6 +6,13 @@ from Zadanie_app.models import File
 from django.urls import reverse_lazy
 from django.urls import reverse
 from Zadanie_app.data_analizing import DataAnalizing
+from Zadanie_app.forms import RegisterForm
+
+
+class RegisterView(CreateView):
+    form_class = RegisterForm
+    success_url = reverse_lazy('login')
+    template_name = 'registration/register.html'
 
 
 class FileListView(LoginRequiredMixin, ListView):
