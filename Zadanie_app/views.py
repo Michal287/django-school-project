@@ -16,7 +16,7 @@ class RegisterView(CreateView):
 
 
 class FileListView(LoginRequiredMixin, ListView):
-    template_name = 'files_list.html'
+    template_name = 'file/files_list.html'
 
     def get_queryset(self):
         user = self.request.user
@@ -26,7 +26,7 @@ class FileListView(LoginRequiredMixin, ListView):
 
 class FileDetailView(LoginRequiredMixin, DetailView):
     model = File
-    template_name = 'file_detail.html'
+    template_name = 'file/file_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(FileDetailView, self).get_context_data(**kwargs)
@@ -38,7 +38,7 @@ class FileDetailView(LoginRequiredMixin, DetailView):
 class FileCreateView(LoginRequiredMixin, CreateView):
     model = File
     fields = ['file']
-    template_name = 'file_create.html'
+    template_name = 'file/file_create.html'
 
     def form_valid(self, form):
 
