@@ -15,7 +15,7 @@ class DataAnalizing:
 
         virtual_box = BytesIO()
 
-        self.df[col].plot.bar(rot=0, alpha=0.5)
+        self.df[col].value_counts().plot(kind='bar', title=col)
 
         plt.savefig(virtual_box, format="png")
         image = ImageFile(virtual_box)

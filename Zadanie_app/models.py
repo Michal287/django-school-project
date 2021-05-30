@@ -22,7 +22,7 @@ class File(models.Model):
         'lines': 'get_df_lines',
     }
 
-    def filename(self):
+    def get_filename(self):
         return (str(self.file.name).split("/"))[-1:][0]
 
     def get_df_lines(self):
@@ -45,7 +45,7 @@ class File(models.Model):
         if os.path.exists(path):
             shutil.rmtree(path)
 
-        return super(File, self).delete()
+        super(File, self).delete()
 
     def clean(self):
         if not self.file.name.endswith('.csv'):
@@ -58,6 +58,9 @@ class File(models.Model):
 
         if len(df) > 1000:
             raise ValidationError(("Plik ma za dużo rekordów"))
+
+    def __str__(self):
+        return f"{self.file}"
 
 
 class FileNumerics(models.Model):
